@@ -17,16 +17,28 @@ public class MqttHandler {
 
     public MqttAndroidClient mqttAndroidClient;
 
-    String serverUri = "tcp://192.168.0.110:1883";
-
+    //String serverUri = "tcp://192.168.0.110:1883";
     String clientId = "ExampleAndroidClient";
-    String subscriptionTopic = "/HOME/EnvironmentalStation/Temperature";
+    //String subscriptionTopic = "/HOME/EnvironmentalStation/Temperature";
+    //String username = "test";
+    //String password = "test";
 
-    String username = "test";
-    String password = "test";
+    String serverUrl = "";
+    String username = "";
+    String password = "";
+    String topicTemperature = "";
+    String topicHumidity = "";
+    String topicPressure = "";
 
-    public MqttHandler(Context context){
-        mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
+    public MqttHandler(Context context, String serverUrl, String username, String password, String topicTemperature, String topicHumidity, String topicPressure){
+        this.serverUrl = serverUrl;
+        this.username = username;
+        this.password = password;
+        this.topicTemperature = topicTemperature;
+        this.topicHumidity = topicHumidity;
+        this.topicPressure = topicPressure;
+
+        mqttAndroidClient = new MqttAndroidClient(context, serverUrl, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -79,7 +91,7 @@ public class MqttHandler {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Log.w("Mqtt", "Failed to connect to: " + serverUri + exception.toString());
+                    Log.w("Mqtt", "Failed to connect to: " + serverUrl + exception.toString());
                 }
             });
 
@@ -92,7 +104,29 @@ public class MqttHandler {
 
     private void subscribeToTopic() {
         try {
-            mqttAndroidClient.subscribe(subscriptionTopic, 0, null, new IMqttActionListener() {
+            mqttAndroidClient.subscribe(topicTemperature, 0, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.w("Mqtt","Subscribed!");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.w("Mqtt", "Subscribed fail!");
+                }
+            });
+            mqttAndroidClient.subscribe(topicHumidity, 0, null, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.w("Mqtt","Subscribed!");
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Log.w("Mqtt", "Subscribed fail!");
+                }
+            });
+            mqttAndroidClient.subscribe(topicPressure, 0, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("Mqtt","Subscribed!");

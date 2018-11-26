@@ -49,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:minWidth="100dp"
             android:hint="@string/hint_serverurl"
             android:textSize="16dp" />
         <EditText
@@ -56,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:minWidth="100dp"
             android:hint="@string/hint_port"
             android:textSize="16dp" />
         <EditText
@@ -63,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:minWidth="100dp"
             android:hint="@string/hint_username"
             android:textSize="16dp" />
         <EditText
@@ -70,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:minWidth="100dp"
             android:hint="@string/hint_password"
             android:textSize="16dp" />
         <EditText
