@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true">
+    <RelativeLayout
+        android:id="@+id/typeA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:layout_alignParentLeft="true"/>
+        <ImageButton
+            android:id="@+id/c0sort"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/type"
+            android:background="@null"
+            android:src="@drawable/sort_basic" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/typeA"
+        android:layout_toLeftOf="@id/valueA">
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Timestamp"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/c1sort"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/sort_basic"
+            android:background="@null"
+            android:layout_toRightOf="@id/timestamp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/valueA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">>
+        <TextView
+            android:id="@+id/value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Value"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+        <ImageButton
+            android:id="@+id/c2sort"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/value"
+            android:background="@null"
+            android:src="@drawable/sort_basic" />
+    </RelativeLayout>
+</RelativeLayout>

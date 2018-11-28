@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,74 +18,124 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class MainActivity extends AppCompatActivity {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity /*implements SettingsFragment.OnItemSelectedListener*/{
 
     private MqttHandler mqttHandler;
-
-    //private TextView mTextMessage;
     private  TextView tvStatus;
-    private EditText etServerUrl;
-    private EditText etPort;
-    private EditText etUser;
-    private EditText etPassword;
-    private EditText etTopicTemperature;
-    private EditText etTopicHumidity;
-    private EditText etTopicPressure;
+    private String serverUri, port, user, password, topicTemperature, topicHumidity, topicPressure;
+    public ArrayList<Data> dataList;
 
-    private Button btnConnect;
+    private SettingsFragment settingsFragment;
+    private TableFragment tableFragment;
+    private GraphFragment graphFragment;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    Fragment selectedFragment = null;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    //mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_table:
-                    //mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_graph:
-                    //mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //mTextMessage = (TextView) findViewById(R.id.message);
+        if (savedInstanceState == null) {
+            settingsFragment = SettingsFragment.newInstance();
+            tableFragment = TableFragment.newInstance();
+            //graphFragment = GraphFragment.newInstance();
+        }
         tvStatus = (TextView) findViewById(R.id.connectionStatus);
 
-        //Settings
-        etServerUrl = (EditText) findViewById(R.id.serverUrl);
-        etPort = (EditText) findViewById(R.id.port);
-        etUser = (EditText) findViewById(R.id.user);
-        etPassword = (EditText) findViewById(R.id.password);
-        etTopicTemperature = (EditText) findViewById(R.id.topicTemperature);
-        etTopicHumidity = (EditText) findViewById(R.id.topicHumidity);
-        etTopicPressure = (EditText) findViewById(R.id.topicPressure);
-        btnConnect = (Button) findViewById(R.id.connect);
-        btnConnect.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                launchMqtt();
-            }
-        });
+        dataList = new ArrayList<Data>();
+
         //Navigation
+        mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                //Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        //mTextMessage.setText(R.string.title_home);
+                        //selectedFragment = SettingsFragment.newInstance();
+                        displaySettingsFragment();
+                        break;
+                    case R.id.navigation_table:
+                        //mTextMessage.setText(R.string.title_dashboard);
+                        //selectedFragment = TableFragment.newInstance();
+                        displayTableFragment();
+                        break;
+                    case R.id.navigation_graph:
+                        //mTextMessage.setText(R.string.title_notifications);
+                }
+                //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                //transaction.replace(R.id.frame_layout, selectedFragment);
+                //transaction.commit();
+                return true;
+            }
+        };
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //launchMqtt();
+
+
+        //Manually displaying the first fragment - one time only
+        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, SettingsFragment.newInstance());
+        transaction.commit();*/
+        displaySettingsFragment();
     }
 
-    private void launchMqtt(){
-        mqttHandler = new MqttHandler(getApplicationContext(), etServerUrl.getText() + ":" + etPort.getText(), etUser.getText().toString(), etPassword.getText().toString(), etTopicTemperature.getText().toString(), etTopicHumidity.getText().toString(), etTopicPressure.getText().toString());
+    public void displaySettingsFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (settingsFragment.isAdded()) { // if the fragment is already in container
+            ft.show(settingsFragment);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.frame_layout, settingsFragment, "Settings");
+        }
+        // Hide fragment B
+        if (tableFragment.isAdded()) { ft.hide(tableFragment); }
+        // Hide fragment C
+        //if (graphFragment.isAdded()) { ft.hide(graphFragment); }
+        // Commit changes
+        ft.commit();
+    }
+
+    private void displayTableFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (tableFragment.isAdded()) { // if the fragment is already in container
+            ft.show(tableFragment);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.frame_layout, tableFragment, "Table");
+        }
+        // Hide fragment B
+        if (settingsFragment.isAdded()) { ft.hide(settingsFragment); }
+        // Hide fragment C
+        //if (graphFragment.isAdded()) { ft.hide(graphFragment); }
+        // Commit changes
+        ft.commit();
+    }
+/*
+    private void displayGraphFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (graphFragment.isAdded()) { // if the fragment is already in container
+            ft.show(graphFragment);
+        } else { // fragment needs to be added to frame container
+            ft.add(R.id.frame_layout, graphFragment, "Graph");
+        }
+        // Hide fragment B
+        if (tableFragment.isAdded()) { ft.hide(tableFragment); }
+        // Hide fragment C
+        if (settingsFragment.isAdded()) { ft.hide(settingsFragment); }
+        // Commit changes
+        ft.commit();
+    }*/
+
+    public void launchMqtt(){
+        mqttHandler = new MqttHandler(getApplicationContext(), serverUri + ":" + port, user, password, topicTemperature, topicHumidity, topicPressure);
         mqttHandler.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -94,13 +146,32 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void connectionLost(Throwable throwable) {
-
+                Log.w("Debug","Connection Lost!!");
+                tvStatus.setTextColor(Color.parseColor("#ff0000"));
+                tvStatus.setText("Not Connected");
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 Log.w("Debug",mqttMessage.toString());
-                //mTextMessage.setText(mqttMessage.toString());
+                Date timestamp = new Date();
+                DateFormat timestampFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", new Locale("pl", "PL"));
+                String strTimestamp = timestampFormat.format(timestamp);
+                if(topic.equals(topicTemperature)) {
+                    Data data = new Data("Temperature", strTimestamp, mqttMessage.toString());
+                    dataList.add(data);
+                } else if(topic.equals(topicHumidity)) {
+                    Data data = new Data("Humidity", strTimestamp, mqttMessage.toString());
+                    dataList.add(data);
+                } else if(topicPressure.equals(topicPressure)) {
+                    Data data = new Data("Pressure", strTimestamp, mqttMessage.toString());
+                    dataList.add(data);
+                }
+                Log.w("Debug",Integer.toString(dataList.size()));
+                // Display to terminal arraylist
+                /*for(int i = 0; i < dataList.size(); i++) {
+                    Log.w("dataList",dataList.get(i).getValue());
+                }*/
             }
 
             @Override
@@ -108,5 +179,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void setSettingsInActivity(String serverUri, String port, String user, String password, String topicTemperature, String topicHumidity, String topicPressure) {
+        this.serverUri = serverUri;
+        this.port = port;
+        this.user = user;
+        this.password = password;
+        this.topicTemperature = topicTemperature;
+        this.topicHumidity = topicHumidity;
+        this.topicPressure = topicPressure;
+        Log.w("Debug","Settings received from Settings Fragment and has been set!");
     }
 }

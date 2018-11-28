@@ -12,4 +12,7 @@
     <string name="hint_topichumidity">Topic - Humidity</string>
     <string name="hint_topicpressure">Topic - Pressure</string>
     <string name="btn_connect">Connect</string>
+    <string name="title_activity_table">TableActivity</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
