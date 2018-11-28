@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity /*implements SettingsFragment.OnItemSelectedListener*/{
 
-    private MqttHandler mqttHandler;
+    public MqttHandler mqttHandler;
     private  TextView tvStatus;
     private String serverUri, port, user, password, topicTemperature, topicHumidity, topicPressure;
     public ArrayList<Data> dataList;
@@ -87,6 +87,26 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         transaction.replace(R.id.frame_layout, SettingsFragment.newInstance());
         transaction.commit();*/
         displaySettingsFragment();
+        navigation.getMenu().getItem(2).setChecked(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putString("status", tvStatus.getText().toString());
+        savedInstanceState.putParcelableArrayList("dataList", dataList);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        tvStatus.setText(savedInstanceState.getString("status"));
+        dataList = savedInstanceState.getParcelableArrayList("dataList");
     }
 
     public void displaySettingsFragment() {
@@ -135,13 +155,14 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
     }*/
 
     public void launchMqtt(){
-        mqttHandler = new MqttHandler(getApplicationContext(), serverUri + ":" + port, user, password, topicTemperature, topicHumidity, topicPressure);
+        mqttHandler = new MqttHandler(getApplicationContext(), "tcp://"+serverUri + ":" + port, user, password, topicTemperature, topicHumidity, topicPressure);
         mqttHandler.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
                 Log.w("Debug","Connecting Complete!");
                 tvStatus.setTextColor(Color.parseColor("#00cc00"));
                 tvStatus.setText("Connected");
+                mqttHandler.connected = true;
             }
 
             @Override
@@ -149,6 +170,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
                 Log.w("Debug","Connection Lost!!");
                 tvStatus.setTextColor(Color.parseColor("#ff0000"));
                 tvStatus.setText("Not Connected");
+                mqttHandler.connected = false;
             }
 
             @Override
@@ -172,6 +194,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
                 /*for(int i = 0; i < dataList.size(); i++) {
                     Log.w("dataList",dataList.get(i).getValue());
                 }*/
+                tableFragment.updateTable();
             }
 
             @Override

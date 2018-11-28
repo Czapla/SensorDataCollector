@@ -30,6 +30,8 @@ public class MqttHandler {
     String topicHumidity = "";
     String topicPressure = "";
 
+    boolean connected = false;
+
     public MqttHandler(Context context, String serverUrl, String username, String password, String topicTemperature, String topicHumidity, String topicPressure){
         this.serverUrl = serverUrl;
         this.username = username;
@@ -70,7 +72,7 @@ public class MqttHandler {
     private void connect(){
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
-        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setCleanSession(true);
         mqttConnectOptions.setUserName(username);
         mqttConnectOptions.setPassword(password.toCharArray());
 

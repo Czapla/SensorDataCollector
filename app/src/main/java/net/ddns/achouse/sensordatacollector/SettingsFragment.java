@@ -3,6 +3,7 @@ package net.ddns.achouse.sensordatacollector;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,12 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 ((MainActivity)getActivity()).setSettingsInActivity(etServerUrl.getText().toString(), etPort.getText().toString(), etUser.getText().toString(),
                         etPassword.getText().toString(), etTopicTemperature.getText().toString(), etTopicHumidity.getText().toString(), etTopicPressure.getText().toString());
-                ((MainActivity)getActivity()).launchMqtt();
+                if(((MainActivity)getActivity()).mqttHandler != null) {
+                    Log.w("Debug", "Connected");
+                } else {
+                    ((MainActivity)getActivity()).launchMqtt();
+                    Log.w("Debug", "Not connected");
+                }
             }
         });
     }

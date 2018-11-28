@@ -7,26 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/connectionStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="50dp"
-        android:text="@string/status_connection"
-        android:textSize="20dp"
-        android:textColor="#ff0000"/>
-
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:layout_below="@+id/connectionStatus"
-        android:animateLayoutChanges="true">
-    </FrameLayout>
+        android:layout_above="@+id/navigation">
+        <TextView
+            android:id="@+id/connectionStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="20dip"
+            android:paddingBottom="20dip"
+            android:text="@string/status_connection"
+            android:textSize="20dp"
+            android:textColor="#ff0000"/>
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_below="@+id/connectionStatus"
+            android:animateLayoutChanges="true">
+        </FrameLayout>
+
+    </RelativeLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

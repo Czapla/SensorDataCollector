@@ -52,4 +52,7 @@ public class TableFragment extends Fragment {
         super.onAttach(context);
     }
 
+    public void updateTable() {
+        ((DataListAdapter)adap).notifyDataSetChanged();
+    }
 }
