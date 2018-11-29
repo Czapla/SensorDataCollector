@@ -106,7 +106,7 @@ public class MqttHandler {
 
     private void subscribeToTopic() {
         try {
-            mqttAndroidClient.subscribe(topicTemperature, 0, null, new IMqttActionListener() {
+            mqttAndroidClient.subscribe(topicTemperature, 2, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("Mqtt","Subscribed!");
@@ -117,7 +117,7 @@ public class MqttHandler {
                     Log.w("Mqtt", "Subscribed fail!");
                 }
             });
-            mqttAndroidClient.subscribe(topicHumidity, 0, null, new IMqttActionListener() {
+            mqttAndroidClient.subscribe(topicHumidity, 2, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("Mqtt","Subscribed!");
@@ -128,7 +128,7 @@ public class MqttHandler {
                     Log.w("Mqtt", "Subscribed fail!");
                 }
             });
-            mqttAndroidClient.subscribe(topicPressure, 0, null, new IMqttActionListener() {
+            mqttAndroidClient.subscribe(topicPressure, 2, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.w("Mqtt","Subscribed!");

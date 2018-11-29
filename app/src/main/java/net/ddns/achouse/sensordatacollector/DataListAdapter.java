@@ -1,6 +1,7 @@
 package net.ddns.achouse.sensordatacollector;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,23 @@ public class DataListAdapter extends BaseAdapter {
             holder = (ViewHolder) v.getTag();
         }
         holder.uType.setText(listData.get(position).getType());
+        switch(listData.get(position).getType()) {
+            case "Temperature":
+                holder.uType.setTextColor(Color.parseColor("#ff0000"));
+                holder.uTimestamp.setTextColor(Color.parseColor("#ff0000"));
+                holder.uValue.setTextColor(Color.parseColor("#ff0000"));
+                break;
+            case "Humidity":
+                holder.uType.setTextColor(Color.parseColor("#0000ff"));
+                holder.uTimestamp.setTextColor(Color.parseColor("#0000ff"));
+                holder.uValue.setTextColor(Color.parseColor("#0000ff"));
+                break;
+            case "Pressure":
+                holder.uType.setTextColor(Color.parseColor("#00ff00"));
+                holder.uTimestamp.setTextColor(Color.parseColor("#00ff00"));
+                holder.uValue.setTextColor(Color.parseColor("#00ff00"));
+                break;
+        }
         holder.uTimestamp.setText(listData.get(position).getTimestamp());
         holder.uValue.setText(listData.get(position).getValue());
         return v;

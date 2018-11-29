@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
     private TableFragment tableFragment;
     private GraphFragment graphFragment;
 
-    Fragment selectedFragment = null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         if (savedInstanceState == null) {
             settingsFragment = SettingsFragment.newInstance();
             tableFragment = TableFragment.newInstance();
-            //graphFragment = GraphFragment.newInstance();
+            graphFragment = GraphFragment.newInstance();
         }
         tvStatus = (TextView) findViewById(R.id.connectionStatus);
 
@@ -56,38 +55,26 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                //Fragment selectedFragment = null;
+
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        //mTextMessage.setText(R.string.title_home);
-                        //selectedFragment = SettingsFragment.newInstance();
                         displaySettingsFragment();
                         break;
                     case R.id.navigation_table:
-                        //mTextMessage.setText(R.string.title_dashboard);
-                        //selectedFragment = TableFragment.newInstance();
                         displayTableFragment();
                         break;
                     case R.id.navigation_graph:
-                        //mTextMessage.setText(R.string.title_notifications);
+                        displayGraphFragment();
                 }
-                //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                //transaction.replace(R.id.frame_layout, selectedFragment);
-                //transaction.commit();
                 return true;
             }
         };
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
         //Manually displaying the first fragment - one time only
-        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, SettingsFragment.newInstance());
-        transaction.commit();*/
         displaySettingsFragment();
-        navigation.getMenu().getItem(2).setChecked(true);
+        navigation.getMenu().getItem(1).setChecked(true);
     }
 
     @Override
@@ -119,7 +106,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         // Hide fragment B
         if (tableFragment.isAdded()) { ft.hide(tableFragment); }
         // Hide fragment C
-        //if (graphFragment.isAdded()) { ft.hide(graphFragment); }
+        if (graphFragment.isAdded()) { ft.hide(graphFragment); }
         // Commit changes
         ft.commit();
     }
@@ -134,11 +121,11 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         // Hide fragment B
         if (settingsFragment.isAdded()) { ft.hide(settingsFragment); }
         // Hide fragment C
-        //if (graphFragment.isAdded()) { ft.hide(graphFragment); }
+        if (graphFragment.isAdded()) { ft.hide(graphFragment); }
         // Commit changes
         ft.commit();
     }
-/*
+
     private void displayGraphFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (graphFragment.isAdded()) { // if the fragment is already in container
@@ -152,7 +139,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         if (settingsFragment.isAdded()) { ft.hide(settingsFragment); }
         // Commit changes
         ft.commit();
-    }*/
+    }
 
     public void launchMqtt(){
         mqttHandler = new MqttHandler(getApplicationContext(), "tcp://"+serverUri + ":" + port, user, password, topicTemperature, topicHumidity, topicPressure);
@@ -174,20 +161,23 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+            public void messageArrived(String topic, MqttMessage mqttMessage) {
                 Log.w("Debug",mqttMessage.toString());
                 Date timestamp = new Date();
-                DateFormat timestampFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", new Locale("pl", "PL"));
-                String strTimestamp = timestampFormat.format(timestamp);
+                DateFormat timestampFormatTable = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", new Locale("pl", "PL"));
+                String strTimestampTable = timestampFormatTable.format(timestamp);
                 if(topic.equals(topicTemperature)) {
-                    Data data = new Data("Temperature", strTimestamp, mqttMessage.toString());
+                    Data data = new Data("Temperature", strTimestampTable, mqttMessage.toString());
                     dataList.add(data);
+                    graphFragment.addDataPoint(Float.valueOf(mqttMessage.toString()), "Temperature");
                 } else if(topic.equals(topicHumidity)) {
-                    Data data = new Data("Humidity", strTimestamp, mqttMessage.toString());
+                    Data data = new Data("Humidity", strTimestampTable, mqttMessage.toString());
                     dataList.add(data);
+                    graphFragment.addDataPoint(Float.valueOf(mqttMessage.toString()), "Humidity");
                 } else if(topicPressure.equals(topicPressure)) {
-                    Data data = new Data("Pressure", strTimestamp, mqttMessage.toString());
+                    Data data = new Data("Pressure", strTimestampTable, mqttMessage.toString());
                     dataList.add(data);
+                    graphFragment.addDataPoint(Float.valueOf(mqttMessage.toString()), "Pressure");
                 }
                 Log.w("Debug",Integer.toString(dataList.size()));
                 // Display to terminal arraylist
@@ -195,6 +185,7 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
                     Log.w("dataList",dataList.get(i).getValue());
                 }*/
                 tableFragment.updateTable();
+                //graphFragment.addDataPoint(Float.valueOf(mqttMessage.toString()));
             }
 
             @Override

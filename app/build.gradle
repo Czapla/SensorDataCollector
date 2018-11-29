@@ -16,6 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
@@ -31,9 +34,15 @@ dependencies {
 dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    //implementation 'com.jjoe64:graphview:4.2.2'
 }
 
 dependencies {
     implementation 'com.android.support:design:28.+'
     implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
 }

@@ -3,4 +3,36 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:isScrollContainer="false"
+        tools:context=".ReportFragment"
+        android:layout_marginBottom="50dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartTemperature"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartHumidity"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_below="@id/chartTemperature"
+                android:layout_marginBottom="5dp"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartPressure"
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_below="@id/chartHumidity" />
+        </RelativeLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
