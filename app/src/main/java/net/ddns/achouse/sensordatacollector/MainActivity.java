@@ -145,8 +145,14 @@ public class MainActivity extends AppCompatActivity /*implements SettingsFragmen
         mqttHandler = new MqttHandler(getApplicationContext(), "tcp://"+serverUri + ":" + port, user, password, topicTemperature, topicHumidity, topicPressure);
         mqttHandler.setCallback(new MqttCallbackExtended() {
             @Override
-            public void connectComplete(boolean b, String s) {
-                Log.w("Debug","Connecting Complete!");
+            public void connectComplete(boolean reconnect, String ServerURI) {
+                /*if (reconnect) {
+                    Log.w("Debug","Connecting Complete!");
+                    // Because Clean Session is true, we need to re-subscribe
+                    subscribeToTopic();
+                } else {
+                    Log.w("Debug","Connecting Complete!");
+                }*/
                 tvStatus.setTextColor(Color.parseColor("#00cc00"));
                 tvStatus.setText("Connected");
                 mqttHandler.connected = true;
