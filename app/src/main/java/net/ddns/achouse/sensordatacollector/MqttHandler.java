@@ -165,6 +165,8 @@ public class MqttHandler {
     /**
      * Metoda służąca do nawiązania połączenia z brokerem. Stworzy ona obiekt klasy
      * MqttConnectOpions, którego metody określają ustawienia związane z połączeniem MQTT.
+     *
+     * @throws MqttException
      */
     private void connect(){
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();

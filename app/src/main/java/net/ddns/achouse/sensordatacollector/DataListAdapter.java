@@ -10,30 +10,64 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Klasa implementują BaseAdapter, który na podstawie Listy(ArrayList) automatycznie wstawia dane do
+ * ListView.
+ */
 public class DataListAdapter extends BaseAdapter {
+    /**
+     * Lista obiektów klasy Data.
+     */
     private ArrayList<Data> listData;
+    /**
+     *  Inflater, który tworzy instancje layoutu XML.
+     */
     private LayoutInflater layoutInflater;
 
+    /**
+     * Konstruktor klasy DataListAdapter.
+     * @param aContext Kontekst, z którym połączony będzie Inflater.
+     * @param listData Lista obiektów klasy Data.
+     */
     public DataListAdapter(Context aContext, ArrayList<Data> listData) {
         this.listData = listData;
         layoutInflater = LayoutInflater.from(aContext);
     }
 
+    /**
+     * @return Zwraca rozmiar listy obiektów klasy Data.
+     */
     @Override
     public int getCount() {
         return listData.size();
     }
 
+    /**
+     * @param position Pozycja w liście.
+     * @return Zwraca obiekt klasy Data z listy o podanym indeksie.
+     */
     @Override
     public Object getItem(int position) {
         return listData.get(position);
     }
 
+    /**
+     *
+     * @param position Pozycja w liście.
+     * @return Zwraca indeks.
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * Metoda tworzy wiersz w ListView.
+     * @param position Pozycja w liście.
+     * @param v View, który może być wypełniany Adapterem.
+     * @param vg GroupView nieużywany w tym wypadku.
+     * @return Zwraca wiersz do ListView.
+     */
     public View getView(int position, View v, ViewGroup vg) {
         ViewHolder holder;
         if (v == null) {
@@ -69,9 +103,21 @@ public class DataListAdapter extends BaseAdapter {
         return v;
     }
 
+    /**
+     * Klasa przechowująca referencje do wewnętrznych elementów wiersza.
+     */
     static class ViewHolder {
+        /**
+         * Element wiersza przechowujący typ danych.
+         */
         TextView uType;
+        /**
+         * Element wiersza przechowujący czas odebrania danych.
+         */
         TextView uTimestamp;
+        /**
+         * Element wiersza przechowujący wartość danych.
+         */
         TextView uValue;
     }
 }
