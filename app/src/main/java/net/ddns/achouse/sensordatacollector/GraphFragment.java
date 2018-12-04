@@ -1,6 +1,5 @@
 package net.ddns.achouse.sensordatacollector;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,40 +9,83 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 
+/**
+ * Klasa implementująca Fragment wyświetlający formularz z polami do wypełnienia
+ * potrzebnymi do połączenia z brokerem.
+ */
 public class GraphFragment extends Fragment {
+    /**
+     * Statyczna metoda tworząca nową instancję Fragmentu.
+     * @return Obiekt klasy GraphFragment.
+     */
     public static GraphFragment newInstance() {
         GraphFragment fragment = new GraphFragment();
         return fragment;
     }
 
+    /**
+     * Lista obiektów klasy Data.
+     */
     private ArrayList<Data> dataList = new ArrayList<Data>();
+    /**
+     * Handler dla wykresu temperatury.
+     */
     ChartHandler mChartT;
+    /**
+     * Handler dla wykresu wilgotności.
+     */
     ChartHandler mChartH;
+    /**
+     * Handler dla wykresu ciśnienia.
+     */
     ChartHandler mChartP;
+    /**
+     * Wykres temperatury.
+     */
     LineChart chartTemperature;
+    /**
+     * Wykres wilgotności.
+     */
     LineChart chartHumidity;
+    /**
+     * Wykres ciśnienia.
+     */
     LineChart chartPressure;
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po jego utworzeniu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po utworzeniu instancji widoku
+     * w interfejsie użytkownika.
+     * @param inflater Inflater, do którego zostanie dowiązany XML fragmentu.
+     * @param container ViewGroup, który jest pojemnikiem na obiekty interfejsu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     * @return zwraca inflater powiązany z XML fragmentu.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.graph_fragment, container, false);
     }
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po utworzeniu instancji
+     * intefejsu użytkownika. Tutaj przypisywane są elementy intefejsu do pól klasy oraz przypisywane są instancje obiektów typu Handler dla wykresów.
+     * Są tutaj również tworzone punkty na wykresach z użyciem danych dopisanych do listy od początku życia aplikacji,
+     * do momentu wyświetlenia fragmentu na ekranie.
+     * @param view Widok, który został utworzony w cyklu życia Fragmentu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         dataList = ((MainActivity)getActivity()).dataList;
@@ -66,11 +108,12 @@ public class GraphFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
+    /**
+     * Metoda, która w zależności od typu danych, dodaje punkt do odpowiedniego wykresu. Wywoływana
+     * z poziomu MainActivity.
+     * @param value Wartość danej.
+     * @param type Typ wielkości fizycznej.
+     */
     public void addDataPoint(float value, String type) {
         if(mChartT != null && mChartH != null && mChartP != null) {
             if(type.equals("Temperature")) {
@@ -80,7 +123,6 @@ public class GraphFragment extends Fragment {
             } else if(type.equals("Pressure")) {
                 mChartP.addEntry(value);
             }
-            //mChart.addEntry(value);
             Log.w("Debug", "Added Entry");
         }
     }

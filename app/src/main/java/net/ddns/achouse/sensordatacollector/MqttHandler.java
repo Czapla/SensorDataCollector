@@ -14,13 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
- * Klasa typu Handler dla MQTT Client
- *
- * Zdefiniowane tutaj metody służą do obsługi połączenia z MQTT oraz jego ustawień,
+ * Klasa typu Handler dla MQTT Client. Zdefiniowane tutaj metody służą do obsługi połączenia z MQTT oraz jego ustawień,
  * zdefiniowania zachowań klienta MQTT.
- *
- * @author Adrian Czapla
- * @version 30.11.2018
  */
 public class MqttHandler {
 
@@ -72,18 +67,15 @@ public class MqttHandler {
      *
      * @param context Jest to kontekst definujący stan aplikacji, obiektu. Dzięki niemu nowo utworzone
      *                obiekty wiedzą co się aktualnie dzieje w aplikacji.
-     * @param serverUrl
-     * @see MqttHandler#serverUrl
-     * @param username
-     * @see MqttHandler#username
-     * @param password
-     * @see MqttHandler#password
-     * @param topicTemperature
-     * @see MqttHandler#topicTemperature
-     * @param topicHumidity
-     * @see MqttHandler#topicHumidity
-     * @param topicPressure
-     * @see MqttHandler#topicPressure
+     * @param serverUrl ID klienta widoczny dla brokera(serwera MQTT)
+     * @param username Nazwa użytkownika, która używana jest przy autoryzacji połączenia do brokera.
+     * @param password Hasło użytkonika, które używane jest przy autoryzacji połączenia do brokera.
+     * @param topicTemperature Temat, w ramach którego są publikowane wiadomości z czujnika wilgotności, a w ramach którego
+     *                         aplikacja będzie subskrybowała i odbierała pomiary.
+     * @param topicHumidity Temat, w ramach którego są publikowane wiadomości z czujnika ciśnienia, a w ramach którego
+     *                      aplikacja będzie subskrybowała i odbierała pomiary.
+     * @param topicPressure Temat, w ramach którego są publikowane wiadomości z czujnika ciśnienia, a w ramach którego
+     *                      aplikacja będzie subskrybowała i odbierała pomiary.
      * @return Obiekt klasy MqttHandler
      */
     public MqttHandler(Context context, String serverUrl, String username, String password, String topicTemperature, String topicHumidity, String topicPressure){

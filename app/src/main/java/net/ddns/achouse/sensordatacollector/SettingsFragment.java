@@ -10,35 +10,84 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * Klasa implementująca Fragment wyświetlający formularz z polami do wypełnienia
+ * potrzebnymi do połączenia z brokerem.
+ */
 public class SettingsFragment extends Fragment {
+    /**
+     * Statyczna metoda tworząca nową instancję Fragmentu.
+     * @return Zwraca obiekt klasy SettingsFragment.
+     */
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
         return fragment;
     }
 
+    /**
+     * Pole edycyjne przechowujące URL Brokera.
+     */
     private EditText etServerUrl;
+    /**
+     * Pole edycyjne przechowujące port, na którym nasłuchuje Broker.
+     */
     private EditText etPort;
+    /**
+     * Pole edycyjne przechowujące nazwę użytkownika.
+     */
     private EditText etUser;
+    /**
+     * Pole edycyjne przechowujące hasło użytkownika.
+     */
     private EditText etPassword;
+    /**
+     * Pole edycyjne przechowujące temat(Temperatura).
+     */
     private EditText etTopicTemperature;
+    /**
+     * Pole edycyjne przechowujące temat(Wilgotność).
+     */
     private EditText etTopicHumidity;
+    /**
+     * Pole edycyjne przechowujące temat(Ciśnienie).
+     */
     private EditText etTopicPressure;
-
+    /**
+     * Przycisk, który odpowiada za potwierdzenie wypełnienia formularza.
+     */
     private Button btnConnect;
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po jego utworzeniu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po utworzeniu instancji widoku
+     * w interfejsie użytkownika.
+     * @param inflater Inflater, do którego zostanie dowiązany XML fragmentu.
+     * @param container ViewGroup, który jest pojemnikiem na obiekty interfejsu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     * @return zwraca inflater powiązany z XML fragmentu.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.settings_fragment, container, false);
     }
 
+    /**
+     * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po utworzeniu instancji
+     * intefejsu użytkownika. Tutaj przypisywane są elementy intefejsu do pól klasy. Jest tutaj
+     * również implementowane zachowanie wywoływane naciśnięciem klawisza. W tym przypadku
+     * zebrane dane są przenoszone do pól klasy MainActivity.
+     * @param view Widok, który został utworzony w cyklu życia Fragmentu.
+     * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         //Settings
@@ -64,10 +113,5 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 }

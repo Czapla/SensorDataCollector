@@ -15,55 +15,87 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-public class ChartHandler implements OnChartValueSelectedListener {
+/**
+ * Klasa typu Handler do obsługi wykresów. Zdefiniowane tutaj pola i metody służą do utworzenia wykresów z
+ * odpowiednimi parametrami oraz dodawać kolejne to punkty w serii danych.
+ */
+public class ChartHandler /*implements OnChartValueSelectedListener*/ {
+    /**
+     * Obiekt klasy LineChart reprezentujący wykres.
+     */
     private LineChart mChart;
+    /**
+     * Nazwa serii danych.
+     */
     private String dataLabel;
+    /**
+     * Kolor wykresu.
+     */
     private String color;
-    //private ArrayList<String> Xlabels;
-    //private ArrayList<Float> Yvalues;
+
+    /**
+     * Konstruktor klasy ChartHandler, w którym ustawiany jest Listener obsługujący zdarzenia kliknięcia
+     * na dany punkt na wykresie, oraz ustawiane są pozostałe parametry wykresu.
+     * @param chart Obiekt klasy LineChart reprezentujący wykres.
+     * @param dataLabel Nazwa serii danych.
+     * @param color Kolor wykresu.
+     */
     public ChartHandler(LineChart chart, String dataLabel, String color) {
         mChart = chart;
-        mChart.setOnChartValueSelectedListener(this);
+        //mChart.setOnChartValueSelectedListener(this);
 
         this.dataLabel = dataLabel;
         this.color = color;
 
-        // no description text
+        /**
+         * Tekst wyświetlany, gdy jest brak danych do wyświetlenia.
+         */
         mChart.setNoDataText("You need to provide data for the chart.");
 
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
+        /**
+         * Wyłączenie gestów dotykowych.
+         */
+        mChart.setTouchEnabled(false);
 
-        // enable scaling and dragging
+        /**
+         * Wyłączenie przeciągania oraz skalowania
+         */
         mChart.setDragEnabled(false);
         mChart.setScaleEnabled(false);
         mChart.setDrawGridBackground(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
+        //mChart.setPinchZoom(true);
 
-        // set an alternative background color
+        /**
+         * Ustawienia koloru
+         */
         mChart.setBackgroundColor(Color.WHITE);
-        //mChart.setBorderColor(Color.rgb(67,164,34));
         mChart.setBorderColor(Color.parseColor(color));
         mChart.getDescription().setEnabled(false);
-        //Xlabels = new ArrayList<String>();
-        //Yvalues = new ArrayList<Float>();
         LineData data = new LineData();
         data.setValueTextColor(Color.WHITE);
 
-        // add empty data
+        /**
+         * Dodanie pustych danych.
+         */
         mChart.setData(data);
 
-        // get the legend (only possible after setting data)
+        /**
+         * Dostanie się do legendy wykresu.
+         */
         Legend l = mChart.getLegend();
 
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
+        /**
+         * Ustawienia legendy.
+         */
         l.setForm(Legend.LegendForm.LINE);
         l.setTypeface(Typeface.MONOSPACE);
         l.setTextColor(Color.parseColor(color));
 
+        /**
+         * Ustawienia dotyczące osi X.
+         */
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setTypeface(Typeface.MONOSPACE);
@@ -71,38 +103,23 @@ public class ChartHandler implements OnChartValueSelectedListener {
         xl.setDrawGridLines(false);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(false);
-        //xl.setLabelRotationAngle(-90);
-        /*xAxis.setValueFormatter(new DateValueFormatter());
-        xl.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                //Date timestamp = new Date();
-                //DateFormat timestampFormatGraph = new SimpleDateFormat("hh:mm:ss", new Locale("pl", "PL"));
-                //String strTimestampGraph = timestampFormatGraph.format(timestamp);
-                for(int i = 0; i < Yvalues.size(); i++) {
-                    if(Yvalues.get(i).equals(value)){
-                        return Xlabels.get(i);
-                    }
-                }
-                return "failed";
-                //return  strTimestampGraph;
-                //return new Date(new Float(value).longValue()).toString();
-            }
-        });
-*/
+
+        /**
+         * Ustawienia dotyczące osi Y.
+         */
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(Typeface.MONOSPACE);
         leftAxis.setTextColor(Color.parseColor(color));
-
         leftAxis.setDrawGridLines(true);
-
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setEnabled(false);
 
     }
 
-    public void setChart(LineChart chart){ this.mChart = chart; }
-
+    /**
+     * Metoda dodaje punkt na wykresie o wartości Y równej przekazanej wartości danej.
+     * @param value Wartość danej.
+     */
     public void addEntry(float value) {
 
         LineData data = mChart.getData();
@@ -110,16 +127,12 @@ public class ChartHandler implements OnChartValueSelectedListener {
         if (data != null){
 
             ILineDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...); // can be called as well
-
             if (set == null) {
                 set = createSet();
                 data.addDataSet(set);
             }
 
             data.addEntry(new Entry(set.getEntryCount(),value),0);
-            //Xlabels.add(timestamp);
-            //Yvalues.add(value);
             Log.w("chart", set.getEntryForIndex(set.getEntryCount()-1).toString());
 
             data.notifyDataChanged();
@@ -133,20 +146,18 @@ public class ChartHandler implements OnChartValueSelectedListener {
 
             // move to the latest entry
             mChart.moveViewTo(set.getEntryCount()-1, data.getYMax(), YAxis.AxisDependency.LEFT);
-
-            // this automatically refreshes the chart (calls invalidate())
-            // mChart.moveViewTo(data.getXValCount()-7, 55f,
-            // AxisDependency.LEFT);
         }
     }
 
+    /**
+     * Metoda tworząca pustą serie danych z odpowiednimi parametrami.
+     * @return Zwraca serię danych z odpowiednimi parametrami.
+     */
     private LineDataSet createSet() {
         LineDataSet set = new LineDataSet(null, dataLabel);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColor(Color.parseColor(color));
-        //set.setCircleColor(Color.WHITE);
         set.setLineWidth(2f);
-        //set.setCircleRadius(4f);
         set.setFillAlpha(65);
         set.setFillColor(Color.parseColor(color));
         set.setHighLightColor(Color.parseColor(color));
@@ -156,6 +167,7 @@ public class ChartHandler implements OnChartValueSelectedListener {
         return set;
     }
 
+/*
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         Log.i("Entry selected", e.toString());
@@ -165,5 +177,6 @@ public class ChartHandler implements OnChartValueSelectedListener {
     public void onNothingSelected(){
         Log.i("Nothing selected", "Nothing selected.");
     }
+*/
 
 }

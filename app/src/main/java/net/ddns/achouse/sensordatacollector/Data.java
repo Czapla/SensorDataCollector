@@ -24,13 +24,9 @@ public class Data implements Parcelable {
     /**
      * Konstruktor klasy Data.
      *
-     * @param type
-     * @see Data#type
-     * @param timestamp
-     * @see Data#timestamp
-     * @param value
-     * @see Data#value
-     * @return Obiekt klasy Data.
+     * @param type Typ danych, wielkości fizycznej: Temperature, Humidity, Pressure.
+     * @param timestamp Czas odebrania danych.
+     * @param value Wartość danych, wielkości fizycznej.
      */
     public Data(String type, String timestamp, String value) {
         this.type = type;
