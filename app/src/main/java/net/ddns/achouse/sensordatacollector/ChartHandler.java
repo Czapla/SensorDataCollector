@@ -17,7 +17,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 /**
  * Klasa typu Handler do obsługi wykresów. Zdefiniowane tutaj pola i metody służą do utworzenia wykresów z
- * odpowiednimi parametrami oraz dodawać kolejne to punkty w serii danych.
+ * odpowiednimi parametrami oraz dodawania kolejnych punktów w serii danych.
  */
 public class ChartHandler /*implements OnChartValueSelectedListener*/ {
     /**
@@ -35,7 +35,7 @@ public class ChartHandler /*implements OnChartValueSelectedListener*/ {
 
     /**
      * Konstruktor klasy ChartHandler, w którym ustawiany jest Listener obsługujący zdarzenia kliknięcia
-     * na dany punkt na wykresie, oraz ustawiane są pozostałe parametry wykresu.
+     * na dany punkt na wykresie oraz ustawiane są pozostałe parametry wykresu.
      * @param chart Obiekt klasy LineChart reprezentujący wykres.
      * @param dataLabel Nazwa serii danych.
      * @param color Kolor wykresu.

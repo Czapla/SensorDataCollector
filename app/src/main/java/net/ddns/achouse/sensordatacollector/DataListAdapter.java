@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Klasa implementują BaseAdapter, który na podstawie Listy(ArrayList) automatycznie wstawia dane do
+ * Klasa implementująca BaseAdapter, który na podstawie Listy(ArrayList) automatycznie wstawia dane do
  * ListView.
  */
 public class DataListAdapter extends BaseAdapter {

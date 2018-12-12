@@ -70,7 +70,7 @@ public class GraphFragment extends Fragment {
      * @param inflater Inflater, do którego zostanie dowiązany XML fragmentu.
      * @param container ViewGroup, który jest pojemnikiem na obiekty interfejsu.
      * @param savedInstanceState Obiekt typu Bundle, który reprezentuje stan Fragmentu.
-     * @return zwraca inflater powiązany z XML fragmentu.
+     * @return Zwraca inflater powiązany z XML fragmentu.
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +80,7 @@ public class GraphFragment extends Fragment {
 
     /**
      * Metoda reprezentująca moment w cyklu życia Fragmentu, zaraz po utworzeniu instancji
-     * intefejsu użytkownika. Tutaj przypisywane są elementy intefejsu do pól klasy oraz przypisywane są instancje obiektów typu Handler dla wykresów.
+     * intefejsu użytkownika. Tutaj przypisywane są elementy interfejsu do pól klasy oraz przypisywane są instancje obiektów typu Handler dla wykresów.
      * Są tutaj również tworzone punkty na wykresach z użyciem danych dopisanych do listy od początku życia aplikacji,
      * do momentu wyświetlenia fragmentu na ekranie.
      * @param view Widok, który został utworzony w cyklu życia Fragmentu.
